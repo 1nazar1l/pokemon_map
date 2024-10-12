@@ -80,7 +80,8 @@ def show_pokemon(request, pokemon_id):
         "title_ru": pokemon.title,
         "title_en": "",
         "title_jp": "",
-        "img_url": pokemon_entity.pokemon.image.url
+        "img_url": pokemon_entity.pokemon.image.url,
+        "description": pokemon.description
     }
 
     return render(request, 'pokemon.html', context={
