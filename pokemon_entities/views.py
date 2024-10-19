@@ -30,18 +30,17 @@ def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
 
 def show_all_pokemons(request):
     pokemons = Pokemon.objects.all()
-    pokemon_entities = PokemonEntity.objects.all()
+    local_time = localtime()
+    pokemon_entities = PokemonEntity.objects.filter(appeared_at__lt=local_time,disappeared_at__gt=local_time)
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon_entity in pokemon_entities:
-        local_time = localtime()
-        if pokemon_entity.appeared_at <= local_time and pokemon_entity.disappeared_at > local_time:
-            add_pokemon(
-                folium_map, 
-                pokemon_entity.lat,
-                pokemon_entity.lon,
-                request.build_absolute_uri(pokemon_entity.pokemon.image.url)
-            )
+        add_pokemon(
+            folium_map, 
+            pokemon_entity.lat,
+            pokemon_entity.lon,
+            request.build_absolute_uri(pokemon_entity.pokemon.image.url)
+        )
 
     pokemons_on_page = []
     for pokemon in pokemons:
@@ -63,18 +62,17 @@ def show_all_pokemons(request):
 
 def show_pokemon(request, pokemon_id):
     pokemon = Pokemon.objects.get(id=pokemon_id)
-    pokemon_entities = PokemonEntity.objects.filter(pokemon=pokemon)
+    local_time = localtime()
+    pokemon_entities = PokemonEntity.objects.filter(pokemon=pokemon,appeared_at__lt=local_time,disappeared_at__gt=local_time)
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon_entity in pokemon_entities:
-        local_time = localtime()
-        if pokemon_entity.appeared_at <= local_time and pokemon_entity.disappeared_at > local_time:
-            add_pokemon(
-                folium_map, 
-                pokemon_entity.lat,
-                pokemon_entity.lon,
-                request.build_absolute_uri(pokemon_entity.pokemon.image.url)
-            )
+        add_pokemon(
+            folium_map, 
+            pokemon_entity.lat,
+            pokemon_entity.lon,
+            request.build_absolute_uri(pokemon_entity.pokemon.image.url)
+        )
             
     previous_evolution = {}
     previous_pokemon = pokemon.previous_evolution
