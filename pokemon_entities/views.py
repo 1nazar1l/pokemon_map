@@ -14,6 +14,13 @@ DEFAULT_IMAGE_URL = (
     '&fill=transparent'
 )
 
+def checking_picture(image):
+    if image:
+            image_url = image.url
+    else:
+        image_url = ""
+    
+    return image_url
 
 def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
     icon = folium.features.CustomIcon(
@@ -44,10 +51,7 @@ def show_all_pokemons(request):
 
     pokemons_on_page = []
     for pokemon in pokemons:
-        if pokemon.image:
-            image_url = pokemon.image.url
-        else:
-            image_url = ""
+        image_url = checking_picture(pokemon.image)
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
             'img_url': image_url,
