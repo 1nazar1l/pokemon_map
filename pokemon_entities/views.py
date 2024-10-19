@@ -6,6 +6,7 @@ from django.shortcuts import render
 
 from .models import Pokemon, PokemonEntity
 from django.utils.timezone import localtime
+from django.shortcuts import get_object_or_404
 
 MOSCOW_CENTER = [55.751244, 37.618423]
 DEFAULT_IMAGE_URL = (
@@ -65,7 +66,7 @@ def show_all_pokemons(request):
 
 
 def show_pokemon(request, pokemon_id):
-    pokemon = Pokemon.objects.get(id=pokemon_id)
+    pokemon = get_object_or_404(Pokemon, id=pokemon_id)
     local_time = localtime()
     pokemon_entities = PokemonEntity.objects.filter(pokemon=pokemon,appeared_at__lt=local_time,disappeared_at__gt=local_time)
 
