@@ -18,7 +18,7 @@ def checking_picture(image):
     if image:
             image_url = image.url
     else:
-        image_url = ""
+        image_url = DEFAULT_IMAGE_URL
     
     return image_url
 
