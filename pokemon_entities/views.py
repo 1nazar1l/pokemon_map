@@ -15,7 +15,7 @@ DEFAULT_IMAGE_URL = (
     '&fill=transparent'
 )
 
-def checking_picture(image):
+def get_picture(image):
     image_url = image.url
     if not image: 
         image_url = DEFAULT_IMAGE_URL
@@ -51,7 +51,7 @@ def show_all_pokemons(request):
 
     pokemons_on_page = []
     for pokemon in pokemons:
-        image_url = checking_picture(pokemon.image)
+        image_url = get_picture(pokemon.image)
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
             'img_url': image_url,
